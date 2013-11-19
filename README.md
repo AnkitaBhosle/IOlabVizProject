@@ -1,8 +1,8 @@
  Group Members:
  
- Ankita Bhoise
- Sydney Freidman
- Aisha Kigongo
+ Ankita Bhosle,
+ Sydney Freidman,
+ Aisha Kigongo,
  Brian Murphy
  
  Project : Analysis & Visualization of Economic & Development Indicators World wide to discover patterns of interest
