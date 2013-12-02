@@ -1,4 +1,4 @@
-"","Country.Code","Country.Name.x","X2009","X2010","X2011","X2012","Country.x","fertility_rate","contraception","region","Country.y","internet_users_2010","internet_users_2011","Country.Name.y","YM2010","YM2011","YM2012"
+"index","Country.Code","Country.Name.x","X2009","X2010","X2011","X2012","Country.x","fertility_rate","contraception","region","Country.y","internet_users_2010","internet_users_2011","Country.Name.y","YM2010","YM2011","YM2012"
 "1","ABW","Aruba",-5.653502,NA,NA,NA,NA,NA,NA,NA,"Aruba",42,57.06835805,"Aruba",122.6183388,NA,124.3242745
 "2","AFG","Afghanistan",21.02065,8.43329,6.964322,NA,"Afghanistan",6.9,NA,"Asia","Afghanistan",4,5,"Afghanistan",41.38579639,54.26208022,53.89696302
 "3","AGO","Angola",2.412912,3.407644,3.918567,6.830624,"Angola",6.69,NA,"Africa","Angola",10,14.776,"Angola",46.68924162,48.37797435,48.61000241

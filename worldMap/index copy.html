@@ -1,0 +1,467 @@
+  <!DOCTYPE html>
+  <meta charset="utf-8">
+  <html>
+  <head>
+   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+   <style type="text/css">
+    svg {
+     border:1px solid gray
+   }
+
+   #countries path {
+    /*fill: #f5f5f5;*/
+    stroke: #fff;
+  }
+
+  #arcs path {
+    fill: none;
+    stroke-opacity: .9;
+  }
+  #undefined .background {
+    fill: #e4e4e4;
+    stroke: none;
+    stroke-width: 0;
+  }
+  #timeline rect {
+    fill: white;
+    stroke: none;
+    stroke-width: 0;
+    opacity: 0.8;
+  }
+  #timeline path {
+    stroke: steelBlue;
+    fill: steelBlue;
+    stroke-width: 2px;
+  }
+  #timeline .year-marker {
+    stroke: white;
+    stroke-width: 1px;
+    fill: steelBlue;
+  }
+  #timeline .year-tick {
+    stroke: none;
+    stroke-width: 0;
+    fill: white;
+  }
+  #timeline .year-tick-label {
+    fill: steelBlue;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+</style>
+</head>
+</head>
+<body>
+  <div id="chart"></div>
+  <script type="text/javascript">
+
+    var year = 2003;
+
+    var w = 960,
+    h = 500;
+
+    var bw = 960, bh=200;
+    var barPadding = 1;
+
+    var useGreatCircles = true;
+
+    d3.loadData = function() {
+      var loadedCallback = null;
+      var toload = {};
+      var data = {};
+      var loaded = function(name, d) {
+        delete toload[name];
+        data[name] = d;
+        return notifyIfAll();
+      };
+      var notifyIfAll = function() {
+        if ((loadedCallback != null) && d3.keys(toload).length === 0) {
+          loadedCallback(data);
+        }
+      };
+      var loader = {
+        json: function(name, url) {
+          toload[name] = url;
+          d3.json(url, function(d) {
+            return loaded(name, d);
+          });
+          return loader;
+        },
+        csv: function(name, url) {
+          toload[name] = url;
+          d3.csv(url, function(d) {
+            return loaded(name, d);
+          });
+          return loader;
+        },
+        onload: function(callback) {
+          loadedCallback = callback;
+          notifyIfAll();
+        }
+      };
+      return loader;
+    };
+
+
+
+    var projection = d3.geo.mercator()
+    .translate([480, 300])
+    .scale(970);
+
+    var path = d3.geo.path()
+    .projection(projection);
+
+      var arc = d3.geo.greatArc().precision(3) //3);
+
+      // Set up the color scale to map GDP number into a color space
+      var color = d3.scale.linear()
+      .domain([-8, 0, 8])
+      .range(["#de1f2e", "#e4e4e4", "#0ca454"]);
+
+      var svg = d3.select("body").append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+      var countries = svg.append("g").attr("id", "countries");
+      var centroids = svg.append("g").attr("id", "centroids");
+      var arcs = svg.append("g").attr("id", "arcs");
+      var countrygrowth = svg.append("g").attr("id","growbar")
+
+      //set up the svg for the bar chart
+
+      var bsvg = d3.select("body").append("svg")
+      .attr("width", 960)
+      .attr("height", 200);
+
+      
+
+      timelineXMargin = 40;
+      timelineYMargin = 30;
+
+      function makeRange(from,to) {
+                                    // Generate a range of numbers inclusive
+                                    var r = new Array();
+                                    for ( var i = from; i <= to; i++ ) {
+                                      r.push(i);
+                                    }
+                                    return r;
+                                  }
+
+      //line for the year plots
+      var tx = d3.scale.linear().range([timelineXMargin, w-timelineXMargin]);
+
+      var xAxis = d3.svg.axis().scale(tx).orient("bottom");
+
+      var tline = d3.svg.line()
+      .x(function(d) { return tx(d); })
+      .y(function(d) { return h - timelineYMargin; });
+
+      svg.append("text")
+      .attr("id", "loading")
+      .attr("x", 5)
+      .attr("y", 17)
+      .attr("font-size", "9pt")
+      .attr("font-family", "arial")
+      .text("Loading...");
+
+      d3.loadData()
+      .json('countries', 'world-countries.json')
+      .csv('growth', 'world-gdp-growth.csv')
+      .csv('codes', 'country-codes.csv')
+      .onload(function(data) {
+
+        d3.select("#loading").attr("visibility", "hidden");
+
+          timeRange = makeRange(2003,2012); // temp hardcoded
+          tx.domain(d3.extent(timeRange, function(d) { return d; }));
+
+          countries.selectAll("path")
+            .data(data.countries.features)
+            .enter().append("path")
+            .attr('id',function(d){return d.id;})
+            .attr('class','gdp')
+            .attr('fill', function(d){return growthColor(d,year);})
+            .attr('stroke','##fff')
+            .attr("d", path)
+            .on("click", mapclick)
+            .append("title")
+              .text(function(d){return growthLabel(d,year)});
+            //.style("fill", "steelblue");
+
+            //Custom interface for timeline
+            timeline = svg.append('g')
+            .attr('id','timeline')
+            .attr('style','z-index:99;');
+
+            timeline.append('rect')
+            .attr('x',0)
+            .attr('y',h - timelineYMargin )
+            .attr('width',w)
+            .attr('height',timelineYMargin);
+
+            timeline.append('path')
+            .attr('d',tline(timeRange));
+
+            var tgs = timeline.selectAll('.year-marker')
+            .data(timeRange)
+            .enter().append('g')
+            .attr('class','year-group')
+            .attr('id', function(d) { return 'year'+String(d); })
+            .on("click",timeclick);
+
+            tgs.append("circle")
+            .attr('class','year-marker')
+            .attr("cx", function(d) { return tx(d); }) 
+            .attr("cy", function(d) { return h-timelineYMargin; }) 
+            .attr("r",4);
+
+            tgs.filter(function(d,i) { return (d%5); })
+            .append('circle')
+            .attr('class','year-tick')
+            .attr("cx", function(d) { return tx(d); }) 
+            .attr("cy", function(d) { return h-timelineYMargin; }) 
+            .attr("r",2);
+
+            timeline.selectAll('.year-tick-label')
+            .data(timeRange.filter(function(d){ return !(d%5) && !(d==2003); }))
+            .enter().append("text")
+            .attr('class','year-tick-label')
+            .attr('text-anchor','middle')
+            .attr("x", function(d) { return tx(d); }) 
+            .attr("y", function(d) { return h-timelineYMargin+20; }) 
+            .on("click",timeclick)
+            .text(function(d){ 
+              if ( d%100==0 ) return String(d);
+              return "'"+String(d).slice(2); 
+            });
+
+            timeline.selectAll(".year-group") 
+            .on("mouseover", function(d){
+              d3.select(this).select('.year-marker') 
+              .transition() 
+              .attr("r",6);
+            })
+            .on("mouseout", function(d){
+              var r = d3.select(this).classed('selected') ? 6 : 4;
+              d3.select(this).select('.year-marker') 
+              .transition() 
+              .attr("r",r);
+            });
+
+            timeline.select('#year'+String(year))
+            .classed('selected',true)
+            .select('.year-marker')
+            .style('fill','#2e5270')
+            .attr('r',6);
+
+            timeline.append('text')
+            .text(String(year))
+            .attr('class','year-label')
+            .attr("text-anchor", "middle")
+            .attr('x',w/2)
+            .attr('y',h-50);
+
+                                                    // would be lovely to know the length of the strings in advance
+
+                                                    timeline.append('a')
+                                                    .attr('xlink:href','#')
+                                                    .attr('id','previous-year')
+                                                    .attr('class','year-nav')
+                                                    //.on('click',navigatePrevious)
+                                                    .append('text')
+                                                    .attr("text-anchor", "end")
+                                                    .text('Previous')
+                                                    .attr('x',w/2+5)
+                                                    .attr('y',h-10);
+
+                                                    timeline.append('a')
+                                                    .attr('xlink:href', '#')
+                                                    .attr('id','next-year')
+                                                    .attr('class','year-nav')
+                                                    //.on('click',navigateNext)
+                                                    .append('text')
+                                                    .attr("text-anchor", "start")
+                                                    .text('Next')
+                                                    .attr('x',w/2+15)
+                                                    .attr('y',h-10);
+
+
+
+            ///////////////////////////////////
+
+
+            function growthIn(dpt,year){
+              var t3 =  data.codes.filter(function(d){return d['2code'] == dpt.id});
+              var gdp = data.growth.filter(function(d){ return d['Country Code'] == (t3[0]['3code'])});
+              return gdp;
+
+
+            }
+            function growthColor(dpt,year){
+
+              var cgdp = growthIn(dpt,year);
+              if (typeof cgdp === 'undefined' || cgdp.length == 0 ) {
+                                                  //console.log("Unavailable")
+                                                  return "url(#undefined)";;
+                                                }
+                                                return color(Number(cgdp[0][year]).toFixed(1));
+                                          //else{console.log(cgdp[0][1998]);}
+
+              //return color(ptcol);
+
+            }
+
+            function growthLabel(dpt,year){
+
+
+              var cgdp = growthIn(dpt,year);
+              if (typeof cgdp === 'undefined' || cgdp.length == 0 ) {
+                return "Unavailable"
+              }
+              return cgdp[0]['CountryName'] + ": " 
+              + String(Number(cgdp[0][year]).toFixed(1)) 
+              + "%";
+              
+              //console.log(label);
+              //return label;
+
+            }
+
+            function timeclick(d) {
+    transitionToYear(year=d);
+    return false;
+  }
+
+  function transitionToYear(y) {
+                                        // delay the map transition to set a starting value for undefined
+                                        // fills. otherwise the pattern is replaced by black first
+                                        // webkit flickers when transitioning from pattern to pattern
+                                        
+                                        function colorCheck() {        
+                                          if ( d3.select(this).attr('fill') == 'url(#undefined)' ) {
+                                            d3.select(this).attr('fill', '#e4e4e4');
+                                          }
+                                        }
+
+                                        countries.selectAll(".gdp")
+                                        .transition().delay(1).duration(1000)
+                                        .each("start", colorCheck)
+                                        .attr('fill', function(d) { return growthColor(d,y); });
+                                        
+                                        countries.selectAll(".gdp")
+                                        .select('title')
+                                        .text(function(d) { return growthLabel(d,y); });
+
+                                        timeline.select('.selected')
+                                        .classed('selected',false)
+                                        .select('.year-marker')
+                                        .transition().delay(1).duration(1000)
+                                        .style('fill','steelBlue')
+                                        .attr('r',4);
+                                        timeline.select('#year'+String(y))
+                                        .classed('selected',true)
+                                        .transition().delay(1).duration(1000)
+                                        .select('.year-marker')
+                                        .style('fill','#2e5270')
+                                        .attr('r',6);
+                                        timeline.select('.year-label')
+                                        .transition()
+                                        .duration(1000)
+                                        .text(String(year));
+
+                                        //updateGlobalInfo(y);
+                                        //updateCountryInfo(selectedCountry,y);
+                                      }
+    function mapclick(dt) {
+        //updateCountryInfo(d,year);
+        selectedCountry = dt;
+        var nationname = selectedCountry.properties.name;
+        var selectedgdp = data.growth.filter(function(d){ return d['CountryName'] == nationname});
+        //console.log(selectedgdp[0]);
+        var datapercountry = growthpercountry(selectedgdp[0]);
+        console.log("plotting bars");
+        //Test dataset
+       // var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+        //        11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+        //var yScale = d3.scale.linear()
+        //            .domain([0,d3.max(datapercountry)])
+        //            .range([0,bh]);
+
+        var y0 = Math.max(Math.abs(d3.min(datapercountry)),Math.abs(d3.max(datapercountry)));
+
+        var yScale = d3.scale.linear()
+                    .domain([-y0, y0])
+                    .range([height,0])
+                    .nice();
+
+        var xScale = d3.scale.ordinal()
+              .domain(d3.range(data.length))
+              .rangeRoundBands([0, width], .2);
+
+        var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+
+        countrygrowth.selectAll(".bar")
+          .data(datapercountry)
+          .enter()
+          .append("rect")
+          .attr("class",function(d){return d<0 ? "bar negative":"bar positive";})
+          // .attr("x", function(d, i) {
+          //                 return i * (bw/datapercountry.length);  //Bar width of 20 plus 1 for padding
+          //     })
+          .attr("x",function(d,i){return xScale(i)})
+          //.attr("y",function(d){ return bh-(d*5);})
+          .attr("y",function(d){ return yScale(Math.max(0,d));})
+          .attr("width",bw/datapercountry.length - barPadding)
+          .attr("height", function(d){return d*5;})
+          .attr("fill","teal");
+
+        bsvg.selectAll("text")
+          .data(datapercountry)
+          .enter()
+          .append("text")
+          .text(function(d){ return d;})
+          .attr("x", function(d, i) {
+                          return i * (bw/datapercountry.length)+(w / datapercountry.length - barPadding) / 2;  //Bar width of 20 plus 1 for padding
+              })
+          .attr("y",function(d){ return bh-(d*5)+15;})
+          //.attr("y",function(d){ return yScale(d);})
+          .attr("text-anchor","middle")
+          .attr("font-family","sans-serif")
+          .attr("font-size","11px")
+          .attr("fill","white");
+
+                                }
+
+    function growthpercountry(t){
+
+      var nationstat = t;
+      //var intval = 1;
+      //console.log(t);
+      delete nationstat['CountryName'];
+      delete nationstat['Country Code'];
+
+      for (var i = 1960; i <1995; i++) {
+
+        delete nationstat[i];
+      };
+
+      console.log(t);
+      var vals = Object.keys(nationstat).map(function (key) {
+    return Number(nationstat[key]).toFixed(2);
+});
+
+      console.log(vals);
+      return vals;
+
+    }
+
+          });
+
+
+</script>
+</body>
+</html>

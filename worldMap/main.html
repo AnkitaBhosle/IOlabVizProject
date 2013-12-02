@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3: Setting path fills</title>
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <script type="text/javascript" src="_js/jquery-1.10.2.min.js"></script>
+        <style type="text/css">
+            /* No style rules here yet */       
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+            //Width and height
+            var w = 960;
+            var h = 960;
+
+            d3.loadData = function() {
+                var loadedCallback = null;
+                var toload = {};
+                var data = {};
+                var loaded = function(name, d) {
+                  delete toload[name];
+                  data[name] = d;
+                  return notifyIfAll();
+                };
+                var notifyIfAll = function() {
+                  if ((loadedCallback != null) && d3.keys(toload).length === 0) {
+                    loadedCallback(data);
+                  }
+                };
+                var loader = {
+                  json: function(name, url) {
+                    toload[name] = url;
+                    d3.json(url, function(d) {
+                      return loaded(name, d);
+                    });
+                    return loader;
+                  },
+                  csv: function(name, url) {
+                    toload[name] = url;
+                    d3.csv(url, function(d) {
+                      return loaded(name, d);
+                    });
+                    return loader;
+                  },
+                  onload: function(callback) {
+                    loadedCallback = callback;
+                    notifyIfAll();
+                  }
+                };
+                return loader;
+            };
+            //Define map projection
+            // var projection = d3.geo.mercator()
+            //                        .translate([w/2, h/2])
+            //                        .scale([150]);
+
+            //var width = 960,
+            //height = 960;
+
+            var projection = d3.geo.mercator()
+                    .scale((w + 1) / 2 / Math.PI)
+                    .translate([w / 2, h / 2])
+                    .precision(.1);
+
+            //Define path generator
+            var path = d3.geo.path()
+                             .projection(projection);
+
+            // Set up the color
+            var color = d3.scale.linear()
+                            .domain([-8,0,8])
+                            .range(["#de1fZe", "#e4e4e4", "#0ca454"]);
+
+            //Create SVG element
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+            var countries = svg.append("g").attr("id","countries");
+
+            svg.append("text")
+                      .attr("id", "loading")
+                      .attr("x", 5)
+                      .attr("y",17)
+                      .attr("font-size", "9pt")
+                      .attr("font-family", "arial")
+                      .text("Loading..."); 
+
+            //Load in GeoJSON data
+            // d3.json("world-countries.json", function(json) {
+
+            //     //Bind data and create one path per GeoJSON feature
+            //     svg.selectAll("path")
+            //        .data(json.features)
+            //        .enter()
+            //        .append("path")
+            //        .attr("d", path)
+            //        .style("fill", "steelblue");
+
+            // });
+            d3.loadData()
+                .json('countries','world-countries.json')
+                .onload(function(data)
+                {
+                    countries.selectAll("path")
+                        .data(data.countries.features)
+                        .enter().append("path")
+                        .attr("d",path)
+                        .style("fill", "steelblue");
+                });
+
+        </script>
+    </body>
+</html>
