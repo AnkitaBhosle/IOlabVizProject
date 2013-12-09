@@ -4,19 +4,31 @@
   <head>
    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
    <style type="text/css">
+
+   /*background image -BM*/
+   html { 
+    background: url(images/paper.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
     svg {
      border:1px solid gray;
-     /*colors SVG map background*/
+     /*colors SVG map background -BM*/
      background-color: #CFD4FF;
 
-     /*centers SVG*/
+     /*centers SVG -BM*/
      display: block;
      margin: auto;
+     /*adds small margin between SVGs*/
+     margin-bottom:5px;
    }
 
-   /*diff color for barchart*/
+   /*diff color for barchart -BM*/
    #barchart {
     background-color: white;
+    margin-bottom:50px;
    }
 
    #countries path {
@@ -58,7 +70,19 @@
     fill: steelBlue;
     font-size: 1em;
     cursor: pointer;
+    /*font for timeline -BM*/
+    font-family:courier;
+
   }
+
+  /*font for timeline -BM*/
+  #timeline .year-label {
+    font-family:courier;
+  }
+  #timeline .year-nav {
+    font-family:courier;
+  }
+
   .bar.positive {
   fill: steelblue;
 }
@@ -67,8 +91,9 @@
   fill: brown;
 }
 
+/*change font to courier -BM*/
 .axis text {
-  font: 10px sans-serif;
+  font: 10px courier;
 }
 
 .axis path,
@@ -83,19 +108,35 @@
 #setupinfo {
   text-align:center;
   font-family:courier;
+  width:900px;
+  margin:auto;
 }
+
+#setupinfo p {
+  font-size:small;
+}
+
+
 
 
 </style>
 </head>
 </head>
 <body>
+  <!--title and introduction paragraph -BM -->
   <div id="setupinfo">
     <h2>World GDP, Recession and Technology</h2>
     <h3>Understanding the impact of GDP variance on technology usage</h3>
-
-
+    
+    <p>The map below is tied to worldwide GDP data over the past decade.  
+    It is color-coded to show positive and negative GDP by year.
+    Using this data, you can watch GDP evolve by pushing the play button and 
+    can explore the relationship between GDP change and technology use by 
+    selecting a year and clicking a specific country. 
+    </p>
+    <br>
   </div>
+  
   <div id="chart"></div>
   <script type="text/javascript">
 
@@ -505,9 +546,11 @@
           .attr("y",function(d){ return yScale(0);})
           .text(function(d){ return d;})
           .attr("text-anchor","middle")
-          .attr("font-family","sans-serif")
+          /*change bar font to Courier -BM*/
+          .attr("font-family","courier")
           .attr("font-size","11px")
-          .attr("fill","red");
+          /*change font color to black -BM*/
+          .attr("fill","black");
 
           
 
