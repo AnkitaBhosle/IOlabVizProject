@@ -8,10 +8,10 @@ How much of the statement above is validated by the data?
 Exploring answers to this question was the focus and interest of our project. 
 
 Team members and roles
-Ankita Bhosle, - Data curation, organization & Coding
-Sydney Freidman, - Front-end Design & styling
-Aisha Kigongo, - Data curation, organization & Coding
-Brian Murphy - Front-end Design & styling
+1. Ankita Bhosle, - Data curation, organization & Coding
+2. Sydney Freidman, - Front-end Design & styling
+3. Aisha Kigongo, - Data curation, organization & Coding
+4. Brian Murphy - Front-end Design & styling
  
 Technologies used:
 Mbostock : d3.v3.min.js
@@ -28,7 +28,6 @@ http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/ind
 Next Steps:
  1. Attempt to animate the timeline through the different years
  2. Provide additional information about the clicked country besides exports & imports
- 3. 
  
 Known Bugs:
 zoom feature is not stable and performing as desired for US & Russia. 
