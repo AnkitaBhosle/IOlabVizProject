@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>IOLabVisualizationFinalProject</title>
@@ -16,6 +17,7 @@
   display:block;
   margin: auto;
   margin-bottom:30px;
+  padding-left: 300px
 }
 
 svg {
@@ -30,7 +32,10 @@ svg {
   display:block;
   margin-right: auto;
   /*adds  small margin between SVGs*/
-     margin-bottom:5px;
+  margin-bottom:5px;
+  width:960px;
+  height:550px;
+  float:left;
 }
 
 .info {
@@ -40,6 +45,7 @@ svg {
   background-color: transparent;
   width:960px;
   font-family:courier;
+
 }
 
 .info p {
@@ -50,6 +56,11 @@ svg {
   width:960px;
   font-family:courier;
 }
+#labeltwo{
+  clear:both;
+  text-align: center;
+  padding-left: 130px;
+}
 
 #option {
   display:block;
@@ -58,6 +69,8 @@ svg {
   background-color: transparent;
   width:960px;
   font-family:courier;
+  padding-left: 130px;
+  text-align: center;
 }
 
 /*diff color for barchart -BM*/
@@ -66,10 +79,6 @@ svg {
     margin-bottom:50px;
    }
 
-#map {
-  width:960px;
-  height:550px;
-}
 
 .country {
  /* fill: #ccc;*/
@@ -167,8 +176,12 @@ rect {
   text-align:left;
   font-family: courier;
   font-size:medium;
+  float: left;
+  padding-right: 100px;
 }
+
 .x_label {display:none;}
+
 </style>
 
 
@@ -680,8 +693,8 @@ d3.loadData = function() {
 // www.code.shutterstock.com/rickshaw/examples
 var graph = new Rickshaw.Graph( {
   element: document.getElementById("chart"),
-  width: 980,
-  height: 550,
+  width: 960,
+  height: 350,
   renderer: 'line',
   min:'auto',
   series: [
@@ -723,7 +736,7 @@ graph.render();
 var hoverDetail = new Rickshaw.Graph.HoverDetail( {
   graph: graph,
   formatter: function(series,x,y){
-    return series.name + ": "+y+"%";
+    return series.name + ":GDP "+y+"%";
   }
 } );
 
@@ -739,8 +752,7 @@ var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
 } );
 
 var axes = new Rickshaw.Graph.Axis.X( {
-  graph: graph,
-  tickFormat: format,
+  graph: graph
 } );
 axes.render();
 
