@@ -66,13 +66,6 @@ svg {
     margin-bottom:50px;
    }
 
-/*body { 
-  color: #666; 
-  background: #f3f3f3; 
-  font: normal 10px "Helvetica Neue", Helvetica, sans-serif; 
-  margin: 2em; 
-}*/
-
 #map {
   width:960px;
   height:550px;
@@ -286,19 +279,18 @@ function reset() {
   d3.select('body').select('#chart_container').append('div').attr("id","slider");
 
 }
+/* The following helper functions map the different gdp, country codes, files together to assist in 
+finding the data for a given country using its country code. */
 
 function growthIn(d,nm,gw){
   var gdp;
   var t3 =  nm.filter(function(n){return n['numeric'] == d.id})[0];
-  //console.log(t3);
-  //var gdp = gw.filter(function(n){ return n['Country Code'] == (t3[0]['3code'])});
   if (typeof t3 === "undefined" || t3.length ==0){
        gdp = t3;
-      //console.log(d);
+
     } else {
       gdp = gw.filter(function(n){ return n['Country Code'] == t3['3code']})[0];
-      //console.log(gdp);
-      //return gdp;
+
     }
   
   return gdp;
@@ -328,7 +320,6 @@ function growthLabel(d,year,nm,gw){
 function timeclick(y,nm,gw) {
 
     transitionToYear(y,nm,gw);
-    //yea
     return false;
   }
 
@@ -336,6 +327,7 @@ function timeclick(y,nm,gw) {
       // delay the map transition to set a starting value for undefined 
       // fills. otherwise the pattern is replaced by black first 
       // webkit flickers when transitioning from pattern to pattern
+      // source: Philip Dhow : mbostock.com
       console.log(y);
       year = y;
       function colorCheck() {  
@@ -519,6 +511,8 @@ function clicked(d) {
 }
 }
 
+// Define the legend as part of the global map
+
 var growthPoints = makeRange(-8,8);
 var ly = height - timelineYMargin-30;
 var lc=750;
@@ -539,7 +533,6 @@ legend.selectAll('.growth-points')
       .data(growthPoints)
       .enter().append('rect')
       .attr('x',function(d) { return lc + d*10; })
-      //.attr('fill',function(d) { return color(d); })
       .style('fill',function(d) { return color(d); })
       .attr('y',ly)
       .attr('width',9)
@@ -578,7 +571,7 @@ legend.append('text')
       .attr('y',ly+9)
       .text('n/a');
 
-//
+// Helper function to draw the line data
 function drawlinegraph(d)
 {
   var codeVal = d['Country Code'];
@@ -623,7 +616,6 @@ d3.loadData = function() {
 
     
     d3.loadData()
-       //console.log('here, bitch')
       .csv('growth', 'data/world-gdp-growth.csv')
       .csv('mobile', 'data/exports.csv')
       .csv('bband', 'data/imports.csv')
@@ -651,13 +643,10 @@ d3.loadData = function() {
           for (var j = 2005; j<=2011; j++)
       {
       if(data.mobile[i]["Country Code"] == codeVal)
-      //seriesData[0].push({'x':j,'y':Math.log(parseFloat(data.mobile[i][j]).toFixed(2))});
       seriesData[0].push({'x':j,'y':parseFloat(parseFloat(data.mobile[i][j]).toFixed(2))});   
       
       };
     };
-
-    //console.log(seriesData)
 
     for (var i = 0; i <= data.bband.length - 1; i++) 
         {
@@ -673,6 +662,8 @@ d3.loadData = function() {
     // instantiate our graph!
     a = [{'x':10,'y':20}];
 
+// Use Rickshaw d3 library
+// www.code.shutterstock.com/rickshaw/examples
 var graph = new Rickshaw.Graph( {
   element: document.getElementById("chart"),
   width: 960,
