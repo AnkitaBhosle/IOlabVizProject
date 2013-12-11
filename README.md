@@ -1,4 +1,4 @@
-Project title : GDP and the Players
+Project title : <s>GDP and the Players<s>
 
 Project description
 Our project looks at GDP, Imports and Exports. When a country exports goods, it sells them to a foreign market, that is to consumers, businesses, or governments in another country. Those exports bring money into the country, which increases the exporting nation's GDP. When a country imports goods, it buys them from foreign producers. The money spent on imports leaves the economy, and that decreases the importing nations GDP. 
@@ -8,10 +8,10 @@ How much of the statement above is validated by the data?
 Exploring answers to this question was the focus and interest of our project. 
 
 Team members and roles
-1. Ankita Bhosle, - Data curation, organization & Coding
-2. Sydney Freidman, - Front-end Design & styling
-3. Aisha Kigongo, - Data curation, organization & Coding
-4. Brian Murphy - Front-end Design & styling
+ 1. Ankita Bhosle, - Data curation, organization & Coding
+ 2. Sydney Freidman, - Front-end Design & styling
+ 3. Aisha Kigongo, - Data curation, organization & Coding
+ 4. Brian Murphy - Front-end Design & styling
  
 Technologies used:
 Mbostock : d3.v3.min.js
