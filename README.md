@@ -1,4 +1,4 @@
-Project title : <s>GDP and the Players<s>
+Project title : <b>GDP and the Players<b>
 
 Project description
 Our project looks at GDP, Imports and Exports. When a country exports goods, it sells them to a foreign market, that is to consumers, businesses, or governments in another country. Those exports bring money into the country, which increases the exporting nation's GDP. When a country imports goods, it buys them from foreign producers. The money spent on imports leaves the economy, and that decreases the importing nations GDP. 
@@ -14,13 +14,13 @@ Team members and roles
  4. Brian Murphy - Front-end Design & styling
  
 Technologies used:
-Mbostock : d3.v3.min.js
-Rickshaw : code.shutterstock.com/rickshaw/examples
-TopoJSON : https://github.com/mbostock/d3/wiki/Geo-Paths
-jquery
-Worldbank Open data (Financial Indicators)
-R
-python Notebook: PANDAS
+ a. Mbostock : d3.v3.min.js
+ b. Rickshaw : code.shutterstock.com/rickshaw/examples
+ c. TopoJSON : https://github.com/mbostock/d3/wiki/Geo-Paths
+ d. jquery
+ e. Worldbank Open data (Financial Indicators)
+ f. R
+ g. python Notebook: PANDAS
 
 Link to demo version
 http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/index_BM.html
