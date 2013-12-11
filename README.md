@@ -23,11 +23,12 @@ Exploring answers to this question was the focus and interest of our project.
  7. python Notebook: PANDAS
 
 <b>Link to demo version</b>
-http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/index_BM.html
+http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/
 
 <b>Next Steps:</b>
  1. Attempt to animate the timeline through the different years
  2. Provide additional information about the clicked country besides exports & imports
+ 3. Make the page more responsive
  
 <b>Known Bugs:</b>
 zoom feature is not stable and performing as desired for US & Russia. 
