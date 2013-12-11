@@ -29,7 +29,8 @@ Sources
  4. https://github.com/mbostock/d3/wiki/Geo-Paths
  5. techslides.com/d3-world-maps-tooltips-zooming-and-queue
 
-<b>Link to demo version</b>
+<b>Links to demo version</b>
+http://people.ischool.berkeley.edu/~akigongo/worldMap/index.html
 http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/index_BM.html
 
 <b>Next Steps:</b>
