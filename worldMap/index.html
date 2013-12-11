@@ -180,6 +180,7 @@ rect {
 <script src="_js/rickshaw.min.js"></script>
 <!--Set up the HTML body-->
 <body>
+  
   <div id="titleinfo">
     <h2>World GDP and Imports/Exports 2003-2012</h2>
     <h3>Understanding the impact of GDP variance and national response to economic events</h3>
@@ -196,11 +197,11 @@ rect {
     2. Click on a country to see detailed economic data<br><br>
 
     3. Use legend toggles to focus on specific data sets</p>
-  </div>
+</div>
 <!--Set up the map of the world-->
 <div id="map"></div>
-<div class='info'>
-  Export and Import of Goods and Services Over Time (% of GDP)</div>
+<div id="labeltwo" class='info'>
+</div>
 <!--Set up the chart that will show the GDP vs. Imports vs. Exports-->
 <div id="chart_container">
   <div id="chart"></div>
@@ -278,6 +279,7 @@ function reset() {
   d3.select('body').select('#chart_container').append('div').attr("id","legend_container").append('div').attr("id","smoother");
   d3.select('body').select('#chart_container').select("#legend_container").append('div').attr("id","legend");
   d3.select('body').select('#chart_container').append('div').attr("id","slider");
+  d3.select('body').select('#labeltwo').text(String(""));
 
 }
 /* The following helper functions map the different gdp, country codes, files together to assist in 
@@ -490,6 +492,9 @@ function clicked(d) {
   g.selectAll(".active").classed("active", false);
   d3.select(this).classed("active", active = d);
 
+  d3.select('body').select('#labeltwo')
+    .text(String("Export and Import of Goods and Services Over Time (% of GDP)"));
+
   console.log(d);
   var b = path.bounds(d);
 
@@ -505,7 +510,7 @@ function clicked(d) {
       console.log(gdp);
       world = growth.filter(function(n){ return n['Country Code'] =='WLD'})[0];
 
-      return "Global GDP : "+Number(world[year]).toFixed(2)+"%  ,Country: "+d.name+" , GDP: "+Number(gdp[year]).toFixed(2)+"%";
+      return "Global GDP: "+Number(world[year]).toFixed(2)+"%, Country: "+d.name+", GDP: "+Number(gdp[year]).toFixed(2)+"%";
     });
     
   d3.select('body').select('#option').selectAll('div.info').remove();
@@ -515,6 +520,8 @@ function clicked(d) {
   d3.select('body').select('#chart_container').select("#legend_container").append('div').attr("id","legend");
   d3.select('body').select('#chart_container').append('div').attr("id","slider");
     drawlinegraph(growthIn(d,names,growth));
+
+  
 }
 }
 

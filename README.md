@@ -22,19 +22,13 @@ Exploring answers to this question was the focus and interest of our project.
  6. R
  7. python Notebook: PANDAS
 
-Sources 
- 1. www.d3noob.org
- 2. blog.visual.ly/creating-animations-and-transitions-with-d3-js
- 3. people.ischool.berkeley.edu/~akigongo/sso/nameLines.html
- 4. https://github.com/mbostock/d3/wiki/Geo-Paths
- 5. techslides.com/d3-world-maps-tooltips-zooming-and-queue
-
 <b>Link to demo version</b>
-http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/index_BM.html
+http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/
 
 <b>Next Steps:</b>
  1. Attempt to animate the timeline through the different years
  2. Provide additional information about the clicked country besides exports & imports
+ 3. Make the page more responsive
  
 <b>Known Bugs:</b>
 zoom feature is not stable and performing as desired for US & Russia. 
