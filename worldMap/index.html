@@ -752,7 +752,8 @@ var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
 } );
 
 var axes = new Rickshaw.Graph.Axis.X( {
-  graph: graph
+  graph: graph,
+  tickFormat: format,
 } );
 axes.render();
 
