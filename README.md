@@ -36,7 +36,11 @@ http://people.ischool.berkeley.edu/~bmurphy/IOFinal/IOlabVizProject/worldMap/ind
 <b>Next Steps:</b>
  1. Attempt to animate the timeline through the different years
  2. Provide additional information about the clicked country besides exports & imports
+ 3. Incorporate a search feature for users to look for specific countries
  
 <b>Known Bugs:</b>
-zoom feature is not stable and performing as desired for US & Russia. 
+* zoom feature is not stable and performing as desired for US & Russia.
+* Graph does not properly display the min x-axis and cuts off max x-axis
+
+
  
