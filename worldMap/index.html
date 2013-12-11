@@ -184,7 +184,7 @@ rect {
 <script src="d3/topojson.js"></script>
 <script type="text/javascript" src="_js/jquery-1.10.2.min.js"></script>
 <script src="_js/rickshaw.min.js"></script>
-
+<!--Set up the HTML body-->
 <body>
   <div id="titleinfo">
     <h2>World GDP and Imports/Exports 2003-2012</h2>
@@ -203,11 +203,14 @@ rect {
 
     3. Use legend toggles to focus on specific data sets</p>
   </div>
+<!--Set up the map of the world-->
 <div id="map"></div>
 <div class='info'>
   Export and Import of Goods and Services Over Time (% of GDP)</div>
+<!--Set up the chart that will show the GDP vs. Imports vs. Exports-->
 <div id="chart_container">
   <div id="chart"></div>
+  <!--Allows the person to select which data they would like to see on the chart-->
   <div id="legend_container">
     <div id="smoother" title="Smoothing"></div>
     <div id="legend"></div>
