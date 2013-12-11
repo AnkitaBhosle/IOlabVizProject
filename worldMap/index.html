@@ -512,6 +512,12 @@ function clicked(d) {
       return "Global GDP: "+Number(world[year]).toFixed(2)+"%, Country: "+d.name+", GDP: "+Number(gdp[year]).toFixed(2)+"%";
     });
     
+  d3.select('body').select('#option').selectAll('div.info').remove();
+  d3.select('body').select('#chart_container').selectAll('div').remove();
+  d3.select('body').select('#chart_container').append('div').attr("id","chart");
+  d3.select('body').select('#chart_container').append('div').attr("id","legend_container").append('div').attr("id","smoother");
+  d3.select('body').select('#chart_container').select("#legend_container").append('div').attr("id","legend");
+  d3.select('body').select('#chart_container').append('div').attr("id","slider");
     drawlinegraph(growthIn(d,names,growth));
 
   
