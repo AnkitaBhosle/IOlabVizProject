@@ -168,6 +168,7 @@ rect {
   font-family: courier;
   font-size:medium;
 }
+.x_label {display:none;}
 </style>
 
 
@@ -672,8 +673,8 @@ d3.loadData = function() {
 // www.code.shutterstock.com/rickshaw/examples
 var graph = new Rickshaw.Graph( {
   element: document.getElementById("chart"),
-  width: 960,
-  height: 350,
+  width: 980,
+  height: 550,
   renderer: 'line',
   min:'auto',
   series: [
@@ -694,12 +695,28 @@ var graph = new Rickshaw.Graph( {
   ]
 } );
 
+var format = function(n) {
+
+  var map = {
+    2005: '2005',
+    2006: '2006',
+    2007: '2007',
+    2008: '2008',
+    2009: '2009',
+    2010: '2010',
+    2011: '2011',
+    2012: '2012'
+  };
+
+  return map[n];
+}
+
 graph.render();
 
 var hoverDetail = new Rickshaw.Graph.HoverDetail( {
   graph: graph,
   formatter: function(series,x,y){
-    return series.name + ":GDP "+y+"%";
+    return series.name + ": "+y+"%";
   }
 } );
 
@@ -715,7 +732,8 @@ var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
 } );
 
 var axes = new Rickshaw.Graph.Axis.X( {
-  graph: graph
+  graph: graph,
+  tickFormat: format,
 } );
 axes.render();
 
